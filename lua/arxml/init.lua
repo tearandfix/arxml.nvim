@@ -12,6 +12,8 @@ function M.setup(opts)
     require("arxml.highlight").setup()
   end
 
+  require("arxml.lsp").setup()
+
   -- Register the custom filetype with Neovim's filetype system
   vim.filetype.add({ extension = { arxml = "arxml" } })
 end
