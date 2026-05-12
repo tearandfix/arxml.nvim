@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR UUID="aaa00001-0000-0000-0000-000000000001">
+  <AR-PACKAGES>
+    <AR-PACKAGE UUID="aaa00001-0000-0000-0000-000000000002">
+      <SHORT-NAME>VehicleSystem</SHORT-NAME>
+            <P-PORT-PROTOTYPE UUID="aaa00001-0000-0000-0000-000000000004">
+              <SHORT-NAME>BrakeCommand</SHORT-NAME>
+            </P-PORT-PROTOTYPE>
+      <ELEMENTS>
+        <COMPONENT-TYPE UUID="aaa00001-0000-0000-0000-000000000003">
+          <SHORT-NAME>BrakeController</SHORT-NAME>
+          <PORTS>
+            <P-PORT-PROTOTYPE UUID="aaa00001-0000-0000-0000-000000000004">
+              <SHORT-NAME>BrakeCommand</SHORT-NAME>
+            </P-PORT-PROTOTYPE>
+            <R-PORT-PROTOTYPE UUID="aaa00001-0000-0000-0000-000000000005">
+              <SHORT-NAME>VehicleSpeed</SHORT-NAME>
+            </R-PORT-PROTOTYPE>
+          </PORTS>
+        </COMPONENT-TYPE>
+      </ELEMENTS>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>
