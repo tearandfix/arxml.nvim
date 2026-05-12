@@ -1,12 +1,14 @@
 local M = {}
 
--- Search runtimepath for the companion arxml-lsp Python package.
--- Returns the directory that contains the arxml_lsp/ package, or nil.
-local function find_server_root()
-  for _, rtp in ipairs(vim.api.nvim_list_runtime_paths()) do
-    if vim.uv.fs_stat(rtp .. "/arxml_ls/__main__.py") then
-      return rtp
-    end
+-- arxml-ls is installed by lazy.nvim as a sibling of arxml.nvim.
+-- Resolve its entry-point script relative to this file's own location:
+--   <lazy-dir>/arxml.nvim/lua/arxml/lsp.lua  →  4 levels up  →  <lazy-dir>
+local function find_server_script()
+  local this_file = debug.getinfo(1, "S").source:sub(2) -- strip leading '@'
+  local lazy_dir = vim.fn.fnamemodify(this_file, ":h:h:h:h")
+  local script = lazy_dir .. "/arxml-ls/arxml_ls.py"
+  if vim.uv.fs_stat(script) then
+    return script
   end
 end
 
@@ -24,15 +26,15 @@ function M.setup()
     group = group,
     pattern = "arxml",
     callback = function(ev)
-      local server_root = find_server_root()
-      if not server_root then
+      local server_script = find_server_script()
+      if not server_script then
         return
       end
 
       vim.lsp.start({
         name     = "arxml-ls",
-        cmd      = { "python3", "arxml_ls.py" },
-        cmd_env  = { PYTHONPATH = server_root },
+        cmd      = { "python3", server_script },
+        cmd_env  = { PYTHONPATH = vim.fn.fnamemodify(server_script, ":h") },
         root_dir = get_root(ev.buf),
       }, { bufnr = ev.buf })
     end,
