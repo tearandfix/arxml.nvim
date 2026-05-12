@@ -30,3 +30,7 @@ local map = function(lhs, rhs, desc)
   vim.keymap.set("n", lhs, rhs, { buffer = true, silent = true, desc = desc })
 end
 
+vim.api.nvim_buf_create_user_command(0, 'ARXMLDiff', function(opts)
+  require('arxml.diff').open(vim.api.nvim_get_current_buf(), opts.args)
+end, { nargs = 1, complete = 'file', desc = 'Diff ARXML files ignoring UUID values' })
+
