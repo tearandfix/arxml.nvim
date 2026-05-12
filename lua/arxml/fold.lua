@@ -4,7 +4,7 @@ function M.foldexpr(lnum)
     local line = vim.fn.getline(lnum)
 
     -- opening tag (not self-closing)
-    if line:match("^%s*<[^/!?][^>]->?$") 
+    if line:match("^%s*<[^/!?][^>]*>?[^<]*$")
       and not line:match("/>%s*$") 
       and not line:match("<AR%-PACKAGES")
       and not line:match("<ELEMENTS") then
@@ -12,7 +12,7 @@ function M.foldexpr(lnum)
     end
 
     -- closing tag
-    if line:match("^%s*</[^>]+>")
+    if line:match("^[^<]*</[^>]+>")
       and not line:match("</AR%-PACKAGES")
       and not line:match("</ELEMENTS") then
         return "s1"
