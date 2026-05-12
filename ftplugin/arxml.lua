@@ -4,6 +4,18 @@ end
 vim.b.did_ftplugin_arxml = true
 
 vim.bo.commentstring = "<!-- %s -->"
+
+-- matchit: enable % to jump between matching XML tags
+vim.b.match_ignorecase = 0
+vim.cmd([=[
+  let b:match_words =
+   \  '<:>,' .
+   \  '<\@<=!\[CDATA\[:]]>,' .
+   \  '<\@<=!--:-->,' .
+   \  '<\@<=?\k\+:?>,' .
+   \  '<\@<=\([^ \t>/]\+\)\%(\s\+[^>]*\%([^/]>\|$\)\|>\|$\):<\@<=/\1>,' .
+   \  '<\@<=\%([^ \t>/]\+\)\%(\s\+[^/>]*\|$\):/>'
+]=])
 vim.bo.shiftwidth = 2
 vim.bo.tabstop = 2
 vim.bo.expandtab = true
