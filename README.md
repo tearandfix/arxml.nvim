@@ -16,6 +16,7 @@ A Neovim plugin for [AUTOSAR](https://www.autosar.org/) ARXML files.
 
 - Neovim ≥ 0.9
 - (Optional) [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) with the `xml` parser for richer syntax
+- (Optional) [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) for the `gr` LSP references picker
 
 ## Installation
 
@@ -64,6 +65,20 @@ The command is buffer-local and only available in `.arxml` buffers.
 ## Keybindings
 
 All keybindings are buffer-local and only active in `.arxml` files.
+
+### LSP
+
+| Key | Action |
+|---|---|
+| `<leader>a` | Code action |
+| `<leader>r` | Rename symbol |
+| `gd` | Go to definition |
+| `gi` | Go to implementation |
+| `gr` | List references (telescope) |
+| `gh` | Hover documentation |
+
+Inline virtual-text diagnostics are disabled in favour of a floating window
+that appears automatically when the cursor rests on a line (`updatetime=250`).
 
 ## Configuration
 

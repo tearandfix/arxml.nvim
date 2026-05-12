@@ -30,6 +30,23 @@ local map = function(lhs, rhs, desc)
   vim.keymap.set("n", lhs, rhs, { buffer = true, silent = true, desc = desc })
 end
 
+map('<leader>a', vim.lsp.buf.code_action,    'LSP code action')
+map('<leader>r', vim.lsp.buf.rename,         'LSP rename symbol')
+map('gd',        vim.lsp.buf.definition,     'LSP go to definition')
+map('gi',        vim.lsp.buf.implementation, 'LSP go to implementation')
+map('gr',        function() require('telescope.builtin').lsp_references() end, 'LSP references')
+map('gh',        vim.lsp.buf.hover,          'LSP hover')
+
+vim.diagnostic.config({ virtual_text = false })
+vim.o.updatetime = 250
+
+vim.api.nvim_create_autocmd('CursorHold', {
+  buffer = 0,
+  callback = function()
+    vim.diagnostic.open_float(nil, { focus = false })
+  end,
+})
+
 vim.api.nvim_buf_create_user_command(0, 'ARXMLDiff', function(opts)
   require('arxml.diff').open(vim.api.nvim_get_current_buf(), opts.args)
 end, { nargs = 1, complete = 'file', desc = 'Diff ARXML files ignoring UUID values' })
