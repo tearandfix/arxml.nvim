@@ -7,7 +7,6 @@ A Neovim plugin for [AUTOSAR](https://www.autosar.org/) ARXML files.
 | Feature | Description |
 |---|---|
 | Filetype detection | `.arxml` files are automatically recognised |
-| Syntax highlighting | AUTOSAR-specific tags (`SHORT-NAME`, `*-REF`, packages, …) highlighted on top of XML |
 | Smart folding | Fold by XML/AUTOSAR element depth |
 | LSP | Auto-starts the ARXML language server when the companion plugin is installed |
 
@@ -24,11 +23,7 @@ A Neovim plugin for [AUTOSAR](https://www.autosar.org/) ARXML files.
 {
   "tearandfix/arxml.nvim",
   dependencies = { "tearandfix/arxml_ls" },  -- optional: adds LSP support
-  ft = "arxml",
-  opts = {
-    -- all options are optional; these are the defaults
-    highlight_short_names = true,
-  },
+  ft = "arxml"
 }
 ```
 
@@ -54,8 +49,6 @@ All keybindings are buffer-local and only active in `.arxml` files.
 
 ```lua
 require("arxml").setup({
-  -- Highlight SHORT-NAME values as identifiers and *-REF values as links
-  highlight_short_names = true,
 })
 ```
 
