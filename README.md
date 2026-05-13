@@ -26,12 +26,12 @@ A Neovim plugin for [AUTOSAR](https://www.autosar.org/) ARXML files.
 ```lua
 {
   "tearandfix/arxml.nvim",
-  dependencies = { "tearandfix/arxml_ls" },  -- optional: adds LSP support
+  dependencies = { "tearandfix/arxml-ls" },  -- optional: adds LSP support
   ft = "arxml"
 }
 ```
 
-The `arxml_ls` dependency is optional. When present, the language server starts
+The `arxml-ls` dependency is optional. When present, the language server starts
 automatically for every `.arxml` buffer — no extra configuration required.
 
 ### Manual / packer
