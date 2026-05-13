@@ -10,6 +10,7 @@ A Neovim plugin for [AUTOSAR](https://www.autosar.org/) ARXML files.
 | Smart folding | Fold by XML/AUTOSAR element depth |
 | Syntax highlighting | `<SHORT-NAME>` values are emphasised; `UUID` attributes are dimmed |
 | UUID-aware diff | Compare two ARXML files while ignoring UUID differences |
+| Normalized diff | Same as UUID-aware diff, but also sorts elements by `SHORT-NAME` before comparing |
 | LSP | Auto-starts the ARXML language server when the companion plugin is installed |
 
 ## Requirements
@@ -60,18 +61,29 @@ engine.
 
 Tab-completion works on the file path argument.
 
-**Without arguments** — if exactly two ARXML buffers are open, they are used automatically:
+**Without arguments** — if exactly two ARXML buffers are visible in the current tab, they are used automatically:
 
 ```
 :ARXMLDiff
 ```
 
-If the number of open ARXML buffers is not exactly two, an error is shown with the count found.
+Only visible windows are considered, so other ARXML buffers open in the background do not interfere. An error is shown if the number of visible ARXML buffers is not exactly two.
 
 - Both panes are read-only scratch buffers; the original files are not touched.
 - Close the diff tab with `:tabclose` when done.
 
 The command is buffer-local and only available in `.arxml` buffers.
+
+## Normalized diff
+
+`:ARXMLNormilizedDiff` works identically to `:ARXMLDiff` but runs each buffer through `scripts/normalize_arxml.py` first, which sorts all named elements (those with a `<SHORT-NAME>` child) alphabetically before the diff is computed. This makes structural differences visible even when the two files have elements in different orders.
+
+```
+:ARXMLNormilizedDiff /path/to/other.arxml   " compare current buffer against a file
+:ARXMLNormilizedDiff                        " use the two visible ARXML buffers
+```
+
+Requires Python 3 and `lxml` (`pip install lxml`).
 
 ## Keybindings
 

@@ -47,20 +47,38 @@ vim.api.nvim_create_autocmd('CursorHold', {
   end,
 })
 
+local function get_two_arxml_bufs()
+  local seen = {}
+  local bufs = {}
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    local b = vim.api.nvim_win_get_buf(win)
+    if not seen[b] and vim.bo[b].filetype == 'arxml' then
+      seen[b] = true
+      bufs[#bufs + 1] = b
+    end
+  end
+  if #bufs ~= 2 then
+    vim.notify('ARXMLDiff: expected exactly 2 visible ARXML buffers, found ' .. #bufs, vim.log.levels.ERROR)
+    return nil
+  end
+  return bufs
+end
+
 vim.api.nvim_buf_create_user_command(0, 'ARXMLDiff', function(opts)
   if opts.args ~= '' then
     require('arxml.diff').open(vim.api.nvim_get_current_buf(), opts.args)
   else
-    local arxml_bufs = vim.tbl_filter(function(b)
-      return vim.api.nvim_buf_is_loaded(b)
-        and vim.bo[b].filetype == 'arxml'
-        and vim.fn.buflisted(b) == 1
-    end, vim.api.nvim_list_bufs())
-    if #arxml_bufs ~= 2 then
-      vim.notify('ARXMLDiff: expected exactly 2 ARXML buffers, found ' .. #arxml_bufs, vim.log.levels.ERROR)
-      return
-    end
-    require('arxml.diff').open_bufs(arxml_bufs[1], arxml_bufs[2])
+    local bufs = get_two_arxml_bufs()
+    if bufs then require('arxml.diff').open_bufs(bufs[1], bufs[2]) end
   end
 end, { nargs = '?', complete = 'file', desc = 'Diff ARXML files ignoring UUID values' })
+
+vim.api.nvim_buf_create_user_command(0, 'ARXMLNormilizedDiff', function(opts)
+  if opts.args ~= '' then
+    require('arxml.diff').open_normalized(vim.api.nvim_get_current_buf(), opts.args)
+  else
+    local bufs = get_two_arxml_bufs()
+    if bufs then require('arxml.diff').open_bufs_normalized(bufs[1], bufs[2]) end
+  end
+end, { nargs = '?', complete = 'file', desc = 'Diff ARXML files sorted by SHORT-NAME, ignoring UUID values' })
 
