@@ -52,11 +52,22 @@ diff in a new tab with all `UUID="…"` attribute values replaced by `UUID=""`
 before the diff is computed, so UUID-only changes are invisible to the diff
 engine.
 
+**With a file path** — compare the current buffer against any file:
+
 ```
 :ARXMLDiff /path/to/other.arxml
 ```
 
-- Tab-completion works on the file path argument.
+Tab-completion works on the file path argument.
+
+**Without arguments** — if exactly two ARXML buffers are open, they are used automatically:
+
+```
+:ARXMLDiff
+```
+
+If the number of open ARXML buffers is not exactly two, an error is shown with the count found.
+
 - Both panes are read-only scratch buffers; the original files are not touched.
 - Close the diff tab with `:tabclose` when done.
 

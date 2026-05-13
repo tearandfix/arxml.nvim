@@ -48,6 +48,19 @@ vim.api.nvim_create_autocmd('CursorHold', {
 })
 
 vim.api.nvim_buf_create_user_command(0, 'ARXMLDiff', function(opts)
-  require('arxml.diff').open(vim.api.nvim_get_current_buf(), opts.args)
-end, { nargs = 1, complete = 'file', desc = 'Diff ARXML files ignoring UUID values' })
+  if opts.args ~= '' then
+    require('arxml.diff').open(vim.api.nvim_get_current_buf(), opts.args)
+  else
+    local arxml_bufs = vim.tbl_filter(function(b)
+      return vim.api.nvim_buf_is_loaded(b)
+        and vim.bo[b].filetype == 'arxml'
+        and vim.fn.buflisted(b) == 1
+    end, vim.api.nvim_list_bufs())
+    if #arxml_bufs ~= 2 then
+      vim.notify('ARXMLDiff: expected exactly 2 ARXML buffers, found ' .. #arxml_bufs, vim.log.levels.ERROR)
+      return
+    end
+    require('arxml.diff').open_bufs(arxml_bufs[1], arxml_bufs[2])
+  end
+end, { nargs = '?', complete = 'file', desc = 'Diff ARXML files ignoring UUID values' })
 
